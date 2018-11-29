@@ -10,20 +10,62 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Menu;
+import javafx.scene.paint.Color;
+
 
 public class ArcadeApp extends Application {
 
-    Random rng = new Random();
+    private Random rng = new Random();
+    private Playable playable;
+    private boolean running;
 
     @Override
     public void start(Stage stage) {
-
-	/* You are allowed to rewrite this start method, add other methods, 
-	 * files, classes, etc., as needed. This currently contains some 
-	 * simple sample code for mouse and keyboard interactions with a node
-	 * (rectangle) in a group. 
-	 */
+	running = false;
+	Group group = new Group();
+	Menu menu = new Menu("File");
+	MenuBar menuBar = new MenuBar(menu);
+	menuBar.setStyle("-fx-background-color: #39ff14;");
+	MenuItem exit = new MenuItem("Exit");
+	exit.setOnAction(event -> {
+		Platform.exit();
+	    });
+	menu.getItems().add(exit);
+	stage.setWidth(640);
+	stage.setHeight(480);
+	Button snake = new Button("SNAKE");
+	snake.setOnAction(event -> {
+		if (!running) {
+		playable = new SnakeGame();
+		running = true;
+		playable.play();
+		}
+	    });
+	Button sudoku = new Button("SUDOKU");
+	snake.setOnAction(event -> {
+		if (!running) {
+		playable = new SnakeGame();
+		running = true;
+		playable.play();
+		}
+	    });
+	snake.setMinSize(200,100);
+	sudoku.setMinSize(200,100);
+	snake.setStyle("-fx-background-color: #39ff14;");
+	sudoku.setStyle("-fx-background-color: #39ff14;");
+	snake.setLayoutX(100);
+	sudoku.setLayoutX(350);
+	snake.setLayoutY(240);
+	sudoku.setLayoutY(240);
+	group.getChildren().addAll(menuBar, snake, sudoku);
 	
+	/*
 	Group group = new Group();           // main container
 	Rectangle r = new Rectangle(20, 20); // some rectangle
 	r.setX(50);                          // 50px in the x direction (right)
@@ -44,8 +86,9 @@ public class ArcadeApp extends Application {
 		if (event.getCode() == KeyCode.RIGHT) r.setX(r.getX() + 10.0);
 		// TODO bounds checking
 	    });
-
-        Scene scene = new Scene(group, 640, 480);
+	*/
+	group.setStyle("-fx-background-color: #dc143c;");
+        Scene scene = new Scene(group, 640, 480, Color.BLACK);
         stage.setTitle("cs1302-arcade!");
         stage.setScene(scene);
 	stage.sizeToScene();
@@ -56,6 +99,10 @@ public class ArcadeApp extends Application {
 	group.requestFocus();
 
     } // start
+
+    public boolean getRunning() {
+	return running;
+    }
 
     public static void main(String[] args) {
 	try {

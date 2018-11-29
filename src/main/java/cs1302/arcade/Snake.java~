@@ -1,0 +1,19 @@
+package cs1302.arcade;
+
+public class Snake {
+    int x;
+    int y;
+
+    public Snake() {
+	x = (int) (Math.random()*35);
+	y = (int) (Math.random()*35);
+	
+    }
+    
+    public int getX() {
+	return x;
+    }
+    public int getY() {
+	return y;
+    }
+}
