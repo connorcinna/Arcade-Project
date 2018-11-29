@@ -65,7 +65,7 @@ public class SnakeGame extends Application implements Playable {
 	    directionY = 1;
 	}
     }
-    
+    // COMMMMEEENNNNTTTT
 }
 
 /* TO DO: *********************************************************************************
