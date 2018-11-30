@@ -7,8 +7,8 @@ public class Snake extends Circle{
     
     public Snake() {
 	super(9);
-	x = (int) (Math.random()*35);
-	y = (int) (Math.random()*35);
+	x = (int) (Math.random()*40);
+	y = (int) (Math.random()*40);
     } // Snake
 
     public Snake(int a, int b){
@@ -16,7 +16,7 @@ public class Snake extends Circle{
 	x = a;
 	y = b;
 	
-    } // Smake
+    } // Snake
     
     public int getX() {
 	return x;
