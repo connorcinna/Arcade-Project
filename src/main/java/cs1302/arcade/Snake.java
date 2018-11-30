@@ -1,19 +1,21 @@
 package cs1302.arcade;
+import javafx.scene.shape.Circle;
 
-public class Snake {
+public class Snake extends Circle{
     int x;
     int y;
     
-
     public Snake() {
+	super(9);
 	x = (int) (Math.random()*35);
 	y = (int) (Math.random()*35);
-	
     } // Snake
 
     public Snake(int a, int b){
+	super(9);
 	x = a;
 	y = b;
+	
     } // Smake
     
     public int getX() {
