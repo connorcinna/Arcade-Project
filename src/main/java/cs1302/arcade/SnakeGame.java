@@ -54,7 +54,8 @@ public class SnakeGame implements Playable {
 	stage.setWidth(1280);
 	stage.setHeight(720);
 	scene = new Scene(pane, 1280,720);
-	scene.setOnKeyPressed(event -> moveSnake(timeline, event));
+	timeline.play();
+	scene.setOnKeyPressed(event -> moveSnake(event));
 	stage.setScene(scene);
 	stage.sizeToScene();
 	stage.show();
@@ -79,10 +80,12 @@ public class SnakeGame implements Playable {
 	return timeline;
     } // makeTimeLine
 
-    public void moveSnake(Timeline timeline, KeyEvent e){
+    public void moveSnake(KeyEvent e){
+	/*
 	if (timeline.getStatus() != Status.RUNNING) {
 	    timeline.play();
 	}
+	*/
 	KeyCode code = e.getCode();
 	if (code == KeyCode.LEFT) {
 	    directionX = -1;

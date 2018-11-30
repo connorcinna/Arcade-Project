@@ -1,0 +1,87 @@
+cs1302-arcade:
+total 64
+-rw-r--r-- 1 ugrad 19121 Nov 28 16:45 LICENSE
+-rw-r--r-- 1 ugrad   207 Nov 28 16:45 Makefile
+-rw-r--r-- 1 ugrad  1942 Nov 28 16:45 pom.xml
+-rw-r--r-- 1 ugrad 22960 Nov 28 16:45 README.md
+-rw-r--r-- 1 ugrad     0 Nov 30 16:53 rec29273
+-rw-r--r-- 1 ugrad  1043 Nov 30 16:04 REFLECTION.md
+drwxr-xr-x 3 ugrad  4096 Nov 28 16:45 src
+drwxr-xr-x 5 ugrad  4096 Nov 28 16:45 target
+
+cs1302-arcade/src:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 main
+
+cs1302-arcade/src/main:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 java
+
+cs1302-arcade/src/main/java:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 29 16:46 cs1302
+
+cs1302-arcade/src/main/java/cs1302:
+total 12
+drwxr-xr-x 2 ugrad 4096 Nov 30 14:13 arcade
+-rw-r--r-- 1 ugrad   78 Nov 28 17:14 Playable.java~
+-rw-r--r-- 1 ugrad   76 Nov 28 17:14 SnakeGame.java~
+
+cs1302-arcade/src/main/java/cs1302/arcade:
+total 36
+-rw-r--r-- 1 ugrad 3500 Nov 29 16:53 ArcadeApp.java
+-rw-r--r-- 1 ugrad    1 Nov 29 16:45 #Playable.java#
+-rw-r--r-- 1 ugrad   79 Nov 29 16:53 Playable.java
+-rw-r--r-- 1 ugrad  117 Nov 28 20:34 Playable.java~
+-rw-r--r-- 1 ugrad 3967 Nov 30 14:13 SnakeGame.java
+-rw-r--r-- 1 ugrad 2119 Nov 28 20:34 SnakeGame.java~
+-rw-r--r-- 1 ugrad  510 Nov 30 13:26 Snake.java
+-rw-r--r-- 1 ugrad  248 Nov 28 19:31 Snake.java~
+-rw-r--r-- 1 ugrad  133 Nov 29 16:54 SudokuGame.java
+
+cs1302-arcade/target:
+total 12
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 classes
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 generated-sources
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 maven-status
+
+cs1302-arcade/target/classes:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 cs1302
+
+cs1302-arcade/target/classes/cs1302:
+total 4
+drwxr-xr-x 2 ugrad 4096 Nov 30 14:13 arcade
+
+cs1302-arcade/target/classes/cs1302/arcade:
+total 28
+-rw-r--r-- 1 ugrad 4493 Nov 30 14:13 ArcadeApp.class
+-rw-r--r-- 1 ugrad  132 Nov 30 14:13 Playable.class
+-rw-r--r-- 1 ugrad  871 Nov 30 14:13 Snake.class
+-rw-r--r-- 1 ugrad 6441 Nov 30 14:13 SnakeGame.class
+-rw-r--r-- 1 ugrad  377 Nov 30 14:13 SudokuGame.class
+
+cs1302-arcade/target/generated-sources:
+total 4
+drwxr-xr-x 2 ugrad 4096 Nov 28 16:45 annotations
+
+cs1302-arcade/target/generated-sources/annotations:
+total 0
+
+cs1302-arcade/target/maven-status:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 maven-compiler-plugin
+
+cs1302-arcade/target/maven-status/maven-compiler-plugin:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 28 16:45 compile
+
+cs1302-arcade/target/maven-status/maven-compiler-plugin/compile:
+total 4
+drwxr-xr-x 2 ugrad 4096 Nov 28 16:45 default-compile
+
+cs1302-arcade/target/maven-status/maven-compiler-plugin/compile/default-compile:
+total 8
+-rw-r--r-- 1 ugrad 146 Nov 30 14:13 createdFiles.lst
+-rw-r--r-- 1 ugrad 391 Nov 30 11:05 inputFiles.lst
+/home/ugrads/cummings/cs1302-arcade:/home/work/cs1302a
