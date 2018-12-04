@@ -48,9 +48,9 @@ public class ArcadeApp extends Application {
 		}
 	    });
 	Button sudoku = new Button("SUDOKU");
-	snake.setOnAction(event -> {
+	sudoku.setOnAction(event -> {
 		if (!running) {
-		playable = new SnakeGame();
+		playable = new SudokuGame();
 		running = true;
 		playable.play();
 		}

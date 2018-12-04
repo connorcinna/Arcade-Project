@@ -86,6 +86,7 @@ public class SnakeGame implements Playable {
 	    timeline.play();
 	}
 	*/
+	System.out.println("Made It!");
 	KeyCode code = e.getCode();
 	if (code == KeyCode.LEFT) {
 	    directionX = -1;
