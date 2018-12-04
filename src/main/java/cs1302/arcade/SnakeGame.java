@@ -49,61 +49,81 @@ public class SnakeGame implements Playable {
 	Snake snakeHead = new Snake();
 	snakeHead.setFill(javafx.scene.paint.Color.GREEN);
 	list.add(snakeHead);
-	Timeline timeline = makeTimeLine();
 	fillGrid();
 	stage.setWidth(1280);
 	stage.setHeight(720);
 	scene = new Scene(pane, 1280,720);
+	Timeline timeline = makeTimeLine();
 	timeline.play();
-	scene.setOnKeyPressed(event -> moveSnake(event));
+	scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> moveSnake(event));
 	stage.setScene(scene);
 	stage.sizeToScene();
 	stage.show();
     } // play
 
+    public int getDirectionX() {
+	return directionX;
+    }
+    public int getDirectionY() {
+	return directionY;
+    }
+
+    public void setDirectionX(int x) {
+	directionX = x;
+    }
+    public void setDirectionY(int y) {
+	directionY = y;
+    }
+    
     public Timeline makeTimeLine(){
-	Timeline timeline = new Timeline();
 	KeyFrame kf = new KeyFrame(Duration.millis(100), event -> {
 		if (list.size() > 1) {
 		    for(int i = 1; i < list.size(); i++){
+			grid.getChildren().remove(list.get(i));
 			list.get(i).setX(list.get(i - 1).getX()); //sets the location of every subsequent snakepart 10 times a second
 			list.get(i).setY(list.get(i - 1).getY());
+			grid.add(list.get(i), list.get(i).getX(), list.get(i).getY());
 		    } // for
 		} //if
 		grid.getChildren().remove(list.get(0)); 
-		list.get(0).setX(list.get(0).getX() + directionX); //updates the snakeheads location 10 times a second
-		list.get(0).setY(list.get(0).getY() + directionY);
+		list.get(0).setX(list.get(0).getX() + getDirectionX()); //updates the snakeheads location 10 times a second
+		list.get(0).setY(list.get(0).getY() + getDirectionY());
+		System.out.println(getDirectionX());
+		System.out.println(list.get(0).getX());
+		System.out.println(getDirectionY());
+		System.out.println(list.get(0).getY());
 		grid.add(list.get(0), list.get(0).getX(), list.get(0).getY());
 	});
+	Timeline timeline = new Timeline(kf);
 	timeline.setCycleCount(Timeline.INDEFINITE);
-	timeline.getKeyFrames().add(kf);
 	return timeline;
     } // makeTimeLine
 
     public void moveSnake(KeyEvent e){
-	/*
-	if (timeline.getStatus() != Status.RUNNING) {
-	    timeline.play();
-	}
-	*/
 	KeyCode code = e.getCode();
 	if (code == KeyCode.LEFT) {
-	    directionX = -1;
-	    directionY = 0;
+	    setDirectionX(-1);
+	    setDirectionY(0);
+	    System.out.println("LEFT");
 	}
 	else if (code == KeyCode.RIGHT) {
-	    directionX = 1;
-	    directionY = 0;
+	    setDirectionX(1);
+	    setDirectionY(0);
+	    System.out.println("RIGHT");
 	}
 	else if (code == KeyCode.UP) {
-	    directionX = 0;
-	    directionY = -1;
+	    setDirectionX(0);
+	    setDirectionY(-1);
+	    System.out.println("UP");
 	}
 	else if (code == KeyCode.DOWN) {
-	    directionX = 0;
-	    directionY = 1;
+	    setDirectionX(0);
+	    setDirectionY(1);
+	    System.out.println("DOWN");
 	}
+	System.out.println("SNAKE MOVED");
     } // moveSnake
+    
     public void setInstructions() {
 	instructions.setText("Use the 4 arrow keys (not on the numpad) to control the snake. The snake will always move in the last direction it was told to. If the snake runs into itself or into a wall, then the game ends. Collect apples to get points. As the snake eats apples, it will grow longer, and your score will increase. To win, make your snake fill up the entire game board. As the game progresses, your snake will leave a trail of where it has been. This trail will grow longer as the game goes on, and will last longer as the snake eats more apples. Score: " + score);
     }
