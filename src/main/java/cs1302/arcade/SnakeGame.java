@@ -100,6 +100,15 @@ public class SnakeGame implements Playable {
     } // makeTimeLine
 
     public void moveSnake(KeyEvent e){
+<<<<<<< HEAD
+=======
+	/*
+	if (timeline.getStatus() != Status.RUNNING) {
+	    timeline.play();
+	}
+	*/
+	System.out.println("Made It!");
+>>>>>>> f26917932d724ae781983ee35e97e3258604fd1a
 	KeyCode code = e.getCode();
 	if (code == KeyCode.LEFT) {
 	    setDirectionX(-1);
