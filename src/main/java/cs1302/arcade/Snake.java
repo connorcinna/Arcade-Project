@@ -1,4 +1,5 @@
 package cs1302.arcade;
+
 import javafx.scene.shape.Circle;
 
 public class Snake extends Circle{

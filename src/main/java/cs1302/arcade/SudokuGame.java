@@ -10,20 +10,27 @@ import javafx.scene.input.KeyCode;
 public class SudokuGame implements Playable {
     
     private Stage stage;
+    private int[] fullGameData;
     
     public void play() {
 	
-	HBox hbox = new HBox(new Button("Test!"));
+	HBox hbox = new HBox();
+	fullGameData = new int[81];
+	for(int i = 0; i < 81; i++){ // TO TEST
+	    fullGameData[i] = 0;
+	} // for
+	int[] temp = new int[9];
+	for(int q = 0; q > temp.length; q++){
+	    temp[q] = 0;
+	} // for TEMPORARY
+	BoardPiece bp = new BoardPiece(temp);
+	hbox.getChildren().add(bp);
 	stage = new Stage();
 	Scene scene = new Scene(hbox);
-	scene.setOnKeyPressed(ke -> {
-		KeyCode keyCode = ke.getCode();
-		if (keyCode.equals(KeyCode.S)) {
-		    System.out.println("Clicked!");
-		}
-	    });
 	stage.setScene(scene);
 	stage.sizeToScene();
 	stage.show();
+	
     } // play
-}
+    
+} // SudokuGame

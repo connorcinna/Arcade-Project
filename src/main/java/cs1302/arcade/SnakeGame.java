@@ -101,28 +101,24 @@ public class SnakeGame implements Playable {
 	if (code == KeyCode.LEFT) {
 	    setDirectionX(-1);
 	    setDirectionY(0);
-	    System.out.println("LEFT");
 	}
 	else if (code == KeyCode.RIGHT) {
 	    setDirectionX(1);
 	    setDirectionY(0);
-	    System.out.println("RIGHT");
 	}
 	else if (code == KeyCode.UP) {
 	    setDirectionX(0);
 	    setDirectionY(-1);
-	    System.out.println("UP");
 	}
 	else if (code == KeyCode.DOWN) {
 	    setDirectionX(0);
 	    setDirectionY(1);
-	    System.out.println("DOWN");
 	}
     } // moveSnake
     
     public boolean checkLocation(ArrayList<Integer[]> positions) {
 	for (int i = 0; i < list.size(); i++) {
-	    if (positions.get(i)[0] == Apple.getAppleX() && positions.get(i)[1] == Apple.getAppleY()) {
+	    if (positions.get(i)[0] == apple.getAppleX() && positions.get(i)[1] == apple.getAppleY()) {
 		return true;
 	    }
 	}
@@ -145,13 +141,13 @@ public class SnakeGame implements Playable {
     public void fillGrid() {
 	ArrayList<Integer[]> positions = snakeLocation();
 	apple = new Apple();
+	apple.setFill(javafx.scene.paint.Color.RED);
 	while (checkLocation(positions)) {
 	    int x = (int) (Math.random() * 40);
 	    int y = (int) (Math.random() * 40);
-	    apple.setX(x);
-	    apple.setY(y);
+	    apple.setAppleX(x);
+	    apple.setAppleY(y);
 	    }
-	apple.setStyle("-fx-background-color: #ff0800;");
 	for(int row = 0; row < 40; row++){
 	    for(int col = 0; col < 40; col++) {
 		if (row == apple.getAppleY() && col == apple.getAppleX()) {

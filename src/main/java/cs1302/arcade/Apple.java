@@ -7,6 +7,7 @@ public class Apple extends Circle {
     private int appleY;
     
     public Apple() {
+	super(9);
 	int x = (int) (Math.random() * 40);
 	int y = (int) (Math.random() * 40);
 	appleX = x;
@@ -14,6 +15,7 @@ public class Apple extends Circle {
     }
 
     public Apple(int x, int y){
+	super(9);
 	appleX = x;
 	appleY = y;
     }
