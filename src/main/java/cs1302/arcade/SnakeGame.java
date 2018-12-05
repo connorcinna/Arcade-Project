@@ -21,7 +21,7 @@ import javafx.animation.Animation.Status;
 
 public class SnakeGame implements Playable {
     
-    private ArrayList<Snake> list;
+    ArrayList<Snake> list;
     private int directionX;
     private int directionY;
     private Scene scene;
@@ -30,6 +30,7 @@ public class SnakeGame implements Playable {
     private BorderPane pane;
     private TextArea instructions;
     private int score;
+    private Apple apple;
     
     public void play() {
 	score = 0;
@@ -88,10 +89,6 @@ public class SnakeGame implements Playable {
 		grid.getChildren().remove(list.get(0)); 
 		list.get(0).setX(list.get(0).getX() + getDirectionX()); //updates the snakeheads location 10 times a second
 		list.get(0).setY(list.get(0).getY() + getDirectionY());
-		System.out.println(getDirectionX());
-		System.out.println(list.get(0).getX());
-		System.out.println(getDirectionY());
-		System.out.println(list.get(0).getY());
 		grid.add(list.get(0), list.get(0).getX(), list.get(0).getY());
 	});
 	Timeline timeline = new Timeline(kf);
@@ -100,15 +97,6 @@ public class SnakeGame implements Playable {
     } // makeTimeLine
 
     public void moveSnake(KeyEvent e){
-<<<<<<< HEAD
-=======
-	/*
-	if (timeline.getStatus() != Status.RUNNING) {
-	    timeline.play();
-	}
-	*/
-	System.out.println("Made It!");
->>>>>>> f26917932d724ae781983ee35e97e3258604fd1a
 	KeyCode code = e.getCode();
 	if (code == KeyCode.LEFT) {
 	    setDirectionX(-1);
@@ -130,16 +118,45 @@ public class SnakeGame implements Playable {
 	    setDirectionY(1);
 	    System.out.println("DOWN");
 	}
-	System.out.println("SNAKE MOVED");
     } // moveSnake
+    
+    public boolean checkLocation(ArrayList<Integer[]> positions) {
+	for (int i = 0; i < list.size(); i++) {
+	    if (positions.get(i)[0] == Apple.getAppleX() && positions.get(i)[1] == Apple.getAppleY()) {
+		return true;
+	    }
+	}
+	return false;
+    }
+    public ArrayList<Integer[]> snakeLocation() {
+	ArrayList<Integer[]> positions = new ArrayList<Integer[]>();
+	for (int i = 0; i < list.size(); i++) {
+	    positions.add(i, new Integer[2]);
+	    positions.get(i)[0] = list.get(i).getX();
+	    positions.get(i)[1] = list.get(i).getY();
+	}
+	return positions;
+    }
     
     public void setInstructions() {
 	instructions.setText("Use the 4 arrow keys (not on the numpad) to control the snake. The snake will always move in the last direction it was told to. If the snake runs into itself or into a wall, then the game ends. Collect apples to get points. As the snake eats apples, it will grow longer, and your score will increase. To win, make your snake fill up the entire game board. As the game progresses, your snake will leave a trail of where it has been. This trail will grow longer as the game goes on, and will last longer as the snake eats more apples. Score: " + score);
     }
     
     public void fillGrid() {
+	ArrayList<Integer[]> positions = snakeLocation();
+	apple = new Apple();
+	while (checkLocation(positions)) {
+	    int x = (int) (Math.random() * 40);
+	    int y = (int) (Math.random() * 40);
+	    apple.setX(x);
+	    apple.setY(y);
+	    }
+	apple.setStyle("-fx-background-color: #ff0800;");
 	for(int row = 0; row < 40; row++){
 	    for(int col = 0; col < 40; col++) {
+		if (row == apple.getAppleY() && col == apple.getAppleX()) {
+		    grid.add(apple, col, row);
+		}
 		if (row == list.get(0).getY() && col == list.get(0).getX()) {		 
 		    grid.add(list.get(0), col, row);
 		}
@@ -149,4 +166,6 @@ public class SnakeGame implements Playable {
 	    } // for
 	} // for
     }
+
+    
 }
