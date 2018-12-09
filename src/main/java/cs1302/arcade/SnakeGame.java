@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
@@ -18,6 +19,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TextArea;
 import javafx.animation.Animation.Status;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SnakeGame implements Playable {
     
@@ -75,11 +78,26 @@ public class SnakeGame implements Playable {
     public void setDirectionY(int y) {
 	directionY = y;
     }
+
+    public void gameOver() {
+	Alert alert = new Alert(AlertType.INFORMATION);
+	alert.setTitle("GAME OVER");
+	alert.setContentText("YOU LOST");
+	alert.setOnHidden(event -> Platform.exit());
+	alert.show();
+    }
     
-    public Timeline makeTimeLine(){
+    public Timeline makeTimeLine() {
 	KeyFrame kf = new KeyFrame(Duration.millis(100), event -> {
+		if (list.get(0).getX() >= 40 || list.get(0).getY() >= 40 || list.get(0).getX() <= 0 || list.get(0).getY() <= 0) { //too long by 31 char
+		    list.get(0).setX(20);
+		    list.get(0).setY(20);
+		    directionX = 0;
+		    directionY = 0;
+		    gameOver();
+		}
 		if (list.size() > 1) {
-		    for(int i = 1; i < list.size(); i++){
+		    for (int i = 1; i < list.size(); i++) {
 			grid.getChildren().remove(list.get(i));
 			list.get(i).setX(list.get(i - 1).getX()); //sets the location of every subsequent snakepart 10 times a second
 			list.get(i).setY(list.get(i - 1).getY());
@@ -90,11 +108,29 @@ public class SnakeGame implements Playable {
 		list.get(0).setX(list.get(0).getX() + getDirectionX()); //updates the snakeheads location 10 times a second
 		list.get(0).setY(list.get(0).getY() + getDirectionY());
 		grid.add(list.get(0), list.get(0).getX(), list.get(0).getY());
+		if (apple.getX() == list.get(0).getX() && apple.getY() == list.get(0).getY()) {
+		    eatApple();
+		}
 	});
 	Timeline timeline = new Timeline(kf);
 	timeline.setCycleCount(Timeline.INDEFINITE);
 	return timeline;
     } // makeTimeLine
+
+    public void eatApple() {
+	grid.getChildren().remove(apple);
+	Snake snake = new Snake();
+	snake.setFill(javafx.scene.paint.Color.GREEN);
+	list.add(snake);
+	ArrayList<Integer[]> positions = snakeLocation();
+	while (checkLocation(positions)) {
+	    int x = (int) (Math.random() * 40);
+	    int y = (int) (Math.random() * 40);
+	    apple.setX(x);
+	    apple.setY(y);
+	}
+	grid.add(apple, apple.getY(), apple.getX()); 
+    }
 
     public void moveSnake(KeyEvent e){
 	KeyCode code = e.getCode();
@@ -117,8 +153,8 @@ public class SnakeGame implements Playable {
     } // moveSnake
     
     public boolean checkLocation(ArrayList<Integer[]> positions) {
-	for (int i = 0; i < list.size(); i++) {
-	    if (positions.get(i)[0] == apple.getAppleX() && positions.get(i)[1] == apple.getAppleY()) {
+	for (int i = 0; i < list.size()-1; i++) {
+	    if (positions.get(i)[0] == apple.getX() && positions.get(i)[1] == apple.getY()) {
 		return true;
 	    }
 	}
@@ -135,30 +171,35 @@ public class SnakeGame implements Playable {
     }
     
     public void setInstructions() {
-	instructions.setText("Use the 4 arrow keys (not on the numpad) to control the snake. The snake will always move in the last direction it was told to. If the snake runs into itself or into a wall, then the game ends. Collect apples to get points. As the snake eats apples, it will grow longer, and your score will increase. To win, make your snake fill up the entire game board. As the game progresses, your snake will leave a trail of where it has been. This trail will grow longer as the game goes on, and will last longer as the snake eats more apples. Score: " + score);
+	instructions.setText("Use the 4 arrow keys (not on the numpad) to control the snake.\n\nThe snake will always move in the last direction it was told to.\n\nIf the snake runs into itself or into a wall, then the game ends.\n\nCollect apples to get points.\n\n As the snake eats apples, it will grow longer, and your score will increase.\n\nTo win, make your snake fill up the entire game board.\n\nAs the game progresses, your snake will leave a trail of where it has been.\n\nThis trail will grow longer as the game goes on,\n\nand will last longer as the snake eats more apples.\n\nScore: " + score);
     }
-    
-    public void fillGrid() {
+
+    public Apple makeApple() {
 	ArrayList<Integer[]> positions = snakeLocation();
 	apple = new Apple();
 	apple.setFill(javafx.scene.paint.Color.RED);
 	while (checkLocation(positions)) {
 	    int x = (int) (Math.random() * 40);
 	    int y = (int) (Math.random() * 40);
-	    apple.setAppleX(x);
-	    apple.setAppleY(y);
-	    }
+	    apple.setX(x);
+	    apple.setY(y);
+	}
+	return apple;
+    }
+    
+    public void fillGrid() {
+	Apple apple = makeApple();
 	for(int row = 0; row < 40; row++){
 	    for(int col = 0; col < 40; col++) {
-		if (row == apple.getAppleY() && col == apple.getAppleX()) {
+		Rectangle r = new Rectangle(18, 18);
+		r.setStyle("-fx-background-color: #000000;");
+		grid.add(r, col, row);
+		if (row == apple.getY() && col == apple.getX()) {
 		    grid.add(apple, col, row);
 		}
 		if (row == list.get(0).getY() && col == list.get(0).getX()) {		 
 		    grid.add(list.get(0), col, row);
 		}
-		Rectangle r = new Rectangle(18, 18);
-		r.setStyle("-fx-background-color: #000000;");
-		grid.add(r, col, row);
 	    } // for
 	} // for
     }

@@ -3,15 +3,13 @@ package cs1302.arcade;
 import javafx.scene.shape.Circle;
 public class Apple extends Circle {
 
-    private int appleX;
-    private int appleY;
+    int appleX;
+    int appleY;
     
     public Apple() {
 	super(9);
-	int x = (int) (Math.random() * 40);
-	int y = (int) (Math.random() * 40);
-	appleX = x;
-	appleY = y;
+	appleX = (int) (Math.random() * 40);
+	appleY = (int) (Math.random() * 40);
     }
 
     public Apple(int x, int y){
@@ -20,19 +18,19 @@ public class Apple extends Circle {
 	appleY = y;
     }
 
-    public int getAppleX() {
+    public int getX() {
 	return appleX;
     }
 
-    public int getAppleY() {
+    public int getY() {
 	return appleY;
     }
 
-    public void setAppleX(int x) {
+    public void setX(int x) {
 	appleX = x;
     }
 
-    public void setAppleY(int y) {
+    public void setY(int y) {
 	appleY = y;
     }
 	
