@@ -1,0 +1,102 @@
+Arcade-Project:
+total 68
+-rw-r--r-- 1 ugrad 19121 Nov 29 15:51 LICENSE
+-rw-r--r-- 1 ugrad   207 Nov 29 15:51 Makefile
+-rw-r--r-- 1 ugrad  1942 Nov 29 15:51 pom.xml
+-rw-r--r-- 1 ugrad 22960 Nov 29 15:51 README.md
+-rw-r--r-- 1 ugrad  2754 Nov 30 23:04 rec29273
+-rw-r--r-- 1 ugrad     0 Dec  7 21:48 rec72518
+-rw-r--r-- 1 ugrad  1966 Dec  7 21:48 REFLECTION.md
+drwxr-xr-x 3 ugrad  4096 Nov 29 15:51 src
+drwxr-xr-x 5 ugrad  4096 Nov 29 15:52 target
+
+Arcade-Project/src:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 29 15:51 main
+
+Arcade-Project/src/main:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 29 15:51 java
+
+Arcade-Project/src/main/java:
+total 4
+drwxr-xr-x 3 ugrad 4096 Dec  4 14:52 cs1302
+
+Arcade-Project/src/main/java/cs1302:
+total 4
+drwxr-xr-x 2 ugrad 4096 Dec  7 21:31 arcade
+
+Arcade-Project/src/main/java/cs1302/arcade:
+total 60
+-rw-r--r-- 1 ugrad  580 Dec  7 21:31 Apple.java
+-rw-r--r-- 1 ugrad  559 Dec  7 21:31 Apple.java~
+-rw-r--r-- 1 ugrad 3502 Dec  4 15:43 ArcadeApp.java
+-rw-r--r-- 1 ugrad 1728 Dec  4 18:38 BoardPiece.java
+-rw-r--r-- 1 ugrad    1 Nov 30 23:04 #Playable.java#
+-rw-r--r-- 1 ugrad   79 Nov 30 23:04 Playable.java
+-rw-r--r-- 1 ugrad  117 Nov 30 23:04 Playable.java~
+-rw-r--r-- 1 ugrad 5247 Dec  7 21:31 SnakeGame.java
+-rw-r--r-- 1 ugrad 2119 Nov 29 15:51 SnakeGame.java~
+-rw-r--r-- 1 ugrad  511 Dec  7 21:31 Snake.java
+-rw-r--r-- 1 ugrad  248 Nov 29 15:51 Snake.java~
+-rw-r--r-- 1 ugrad  883 Dec  4 18:48 SudokuGame.java
+-rw-r--r-- 1 ugrad  648 Dec  4 17:35 Tile.java
+-rw-r--r-- 1 ugrad  648 Dec  4 17:28 Tile.java~
+
+Arcade-Project/target:
+total 12
+drwxr-xr-x 4 ugrad 4096 Dec  4 15:32 classes
+drwxr-xr-x 3 ugrad 4096 Nov 29 15:52 generated-sources
+drwxr-xr-x 3 ugrad 4096 Nov 29 15:52 maven-status
+
+Arcade-Project/target/classes:
+total 8
+drwxr-xr-x 3 ugrad 4096 Dec  4 15:32 cs1032
+drwxr-xr-x 3 ugrad 4096 Dec  4 14:50 cs1302
+
+Arcade-Project/target/classes/cs1032:
+total 4
+drwxr-xr-x 2 ugrad 4096 Dec  4 17:05 arcade
+
+Arcade-Project/target/classes/cs1032/arcade:
+total 0
+
+Arcade-Project/target/classes/cs1302:
+total 4
+drwxr-xr-x 2 ugrad 4096 Dec  7 21:32 arcade
+
+Arcade-Project/target/classes/cs1302/arcade:
+total 40
+-rw-r--r-- 1 ugrad  933 Dec  7 21:32 Apple.class
+-rw-r--r-- 1 ugrad 4528 Dec  7 21:32 ArcadeApp.class
+-rw-r--r-- 1 ugrad 1810 Dec  7 21:32 BoardPiece.class
+-rw-r--r-- 1 ugrad  132 Dec  7 21:32 Playable.class
+-rw-r--r-- 1 ugrad  871 Dec  7 21:32 Snake.class
+-rw-r--r-- 1 ugrad 7914 Dec  7 21:32 SnakeGame.class
+-rw-r--r-- 1 ugrad 1463 Dec  7 21:32 SudokuGame.class
+-rw-r--r-- 1 ugrad 1763 Dec  7 21:32 Tile.class
+
+Arcade-Project/target/generated-sources:
+total 4
+drwxr-xr-x 2 ugrad 4096 Nov 29 15:52 annotations
+
+Arcade-Project/target/generated-sources/annotations:
+total 0
+
+Arcade-Project/target/maven-status:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 29 15:52 maven-compiler-plugin
+
+Arcade-Project/target/maven-status/maven-compiler-plugin:
+total 4
+drwxr-xr-x 3 ugrad 4096 Nov 29 15:52 compile
+
+Arcade-Project/target/maven-status/maven-compiler-plugin/compile:
+total 4
+drwxr-xr-x 2 ugrad 4096 Nov 29 15:52 default-compile
+
+Arcade-Project/target/maven-status/maven-compiler-plugin/compile/default-compile:
+total 8
+-rw-r--r-- 1 ugrad 228 Dec  7 21:32 createdFiles.lst
+-rw-r--r-- 1 ugrad 724 Dec  7 21:33 inputFiles.lst
+/home/ugrads/gebara/cs1302-arcade/Arcade-Project:/home/work/cs1302a
