@@ -1,13 +1,15 @@
 package cs1302.arcade;
 
 import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
+
 public class Apple extends Circle {
 
     int appleX;
     int appleY;
     
     public Apple() {
-	super(9);
+	super(9, Color.RED);
 	appleX = (int) (Math.random() * 40);
 	appleY = (int) (Math.random() * 40);
     }

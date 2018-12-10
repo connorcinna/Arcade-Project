@@ -1,5 +1,6 @@
 package cs1302.arcade;
 
+
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -21,6 +22,8 @@ import javafx.scene.control.TextArea;
 import javafx.animation.Animation.Status;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 public class SnakeGame implements Playable {
     
@@ -34,8 +37,11 @@ public class SnakeGame implements Playable {
     private TextArea instructions;
     private int score;
     private Apple apple;
+    private Snake s;
+    private boolean stopped;
     
     public void play() {
+	stopped = false;
 	score = 0;
 	directionX = 0;
 	directionY = 0;
@@ -50,9 +56,8 @@ public class SnakeGame implements Playable {
 	pane.setMinSize(560, 720);
 	pane.setLeft(grid);
 	pane.setRight(instructions);
-	Snake snakeHead = new Snake();
-	snakeHead.setFill(javafx.scene.paint.Color.GREEN);
-	list.add(snakeHead);
+	s = new Snake();
+	list.add(s);
 	fillGrid();
 	stage.setWidth(1280);
 	stage.setHeight(720);
@@ -64,52 +69,44 @@ public class SnakeGame implements Playable {
 	stage.sizeToScene();
 	stage.show();
     } // play
-
-    public int getDirectionX() {
-	return directionX;
-    }
-    public int getDirectionY() {
-	return directionY;
-    }
-
-    public void setDirectionX(int x) {
-	directionX = x;
-    }
-    public void setDirectionY(int y) {
-	directionY = y;
-    }
-
+	  
     public void gameOver() {
 	Alert alert = new Alert(AlertType.INFORMATION);
 	alert.setTitle("GAME OVER");
 	alert.setContentText("YOU LOST");
 	alert.setOnHidden(event -> Platform.exit());
 	alert.show();
+	stopped = true;
     }
     
     public Timeline makeTimeLine() {
 	KeyFrame kf = new KeyFrame(Duration.millis(100), event -> {
-		if (list.get(0).getX() >= 40 || list.get(0).getY() >= 40 || list.get(0).getX() <= 0 || list.get(0).getY() <= 0) { //too long by 31 char
-		    list.get(0).setX(20);
-		    list.get(0).setY(20);
-		    directionX = 0;
-		    directionY = 0;
-		    gameOver();
-		}
-		if (list.size() > 1) {
-		    for (int i = 1; i < list.size(); i++) {
-			grid.getChildren().remove(list.get(i));
-			list.get(i).setX(list.get(i - 1).getX()); //sets the location of every subsequent snakepart 10 times a second
-			list.get(i).setY(list.get(i - 1).getY());
-			grid.add(list.get(i), list.get(i).getX(), list.get(i).getY());
-		    } // for
-		} //if
-		grid.getChildren().remove(list.get(0)); 
-		list.get(0).setX(list.get(0).getX() + getDirectionX()); //updates the snakeheads location 10 times a second
-		list.get(0).setY(list.get(0).getY() + getDirectionY());
-		grid.add(list.get(0), list.get(0).getX(), list.get(0).getY());
-		if (apple.getX() == list.get(0).getX() && apple.getY() == list.get(0).getY()) {
-		    eatApple();
+		if (!stopped) {
+		    if (s.getX() >= 40 || s.getY() >= 40 || s.getX() <= 0 || s.getY() <= 0) { //going out of bounds
+			s.setX(20);
+			s.setY(20);
+			directionX = 0;
+			directionY = 0;
+			gameOver();
+		    }
+		    if (list.size() > 1) {
+			for (int i = 1; i < list.size(); i++) {
+			    if (s.getX() == list.get(i).getX() && s.getY() == list.get(i).getY()) {
+				gameOver();
+			    }
+			    grid.getChildren().remove(list.get(i));
+			    list.get(i).setX(list.get(i - 1).getX()); //sets the location of every subsequent snakepart 10 times a second
+			    list.get(i).setY(list.get(i - 1).getY());
+			    grid.add(list.get(i), list.get(i).getX(), list.get(i).getY());
+			} // for
+		    } //if
+		    grid.getChildren().remove(s);
+		    s.setX(s.getX() + directionX); //updates the snakeheads location 10 times a second
+		    s.setY(s.getY() + directionY);
+		    grid.add(s, s.getX(), s.getY());
+		    if ((apple.getX() == s.getX()) && (apple.getY() == s.getY())) { 
+			eatApple();
+		    }		   
 		}
 	});
 	Timeline timeline = new Timeline(kf);
@@ -119,41 +116,86 @@ public class SnakeGame implements Playable {
 
     public void eatApple() {
 	grid.getChildren().remove(apple);
-	Snake snake = new Snake();
-	snake.setFill(javafx.scene.paint.Color.GREEN);
+	int snakeX = 0, snakeY = 0;
+	if (directionX == 1) {
+	    snakeX = list.get(list.size()-1).getX()-1;
+	    snakeY = list.get(list.size()-1).getY();
+	}
+	else if (directionY == 1) {
+	    snakeY = list.get(list.size()-1).getY()-1;
+	    snakeX = list.get(list.size()-1).getX();
+	}
+	else if (directionY == -1) {
+	    snakeY = list.get(list.size()-1).getY()+1;
+	    snakeX = list.get(list.size()-1).getX();
+	}
+	else if (directionX == -1) {
+	    snakeX = list.get(list.size()-1).getX()+1;
+	    snakeY = list.get(list.size()-1).getY();
+	}
+	Snake snake = new Snake(snakeX, snakeY);
 	list.add(snake);
+	grid.add(snake, snakeX, snakeY);
+	apple.setX((int) (Math.random() * 40));
+	apple.setY((int) (Math.random() * 40));
 	ArrayList<Integer[]> positions = snakeLocation();
 	while (checkLocation(positions)) {
-	    int x = (int) (Math.random() * 40);
-	    int y = (int) (Math.random() * 40);
-	    apple.setX(x);
-	    apple.setY(y);
+	    apple.setX((int) (Math.random() * 40));
+	    apple.setY((int) (Math.random() * 40));
 	}
-	grid.add(apple, apple.getY(), apple.getX()); 
+	grid.add(apple, apple.getX(), apple.getY());
     }
 
     public void moveSnake(KeyEvent e){
 	KeyCode code = e.getCode();
-	if (code == KeyCode.LEFT) {
-	    setDirectionX(-1);
-	    setDirectionY(0);
+	if (list.size() > 1) {
+	    if (code == KeyCode.LEFT && directionX != 1) {
+		directionX = -1;
+		directionY = 0;
+	    }
+	    else if (code == KeyCode.RIGHT && directionX != -1) {
+		directionX = 1;
+		directionY = 0;
+	    }
+	    else if (code == KeyCode.UP && directionY != 1) {
+		directionX = 0;
+		directionY = -1;
+	    }
+	    else if (code == KeyCode.DOWN && directionY != -1) {
+		directionX = 0;
+		directionY = 1;
+	    }
+	    else {
+		s.setX(20);
+		s.setY(20);
+		directionX = 0;
+		directionY = 0;
+		gameOver();		
+	    }
 	}
-	else if (code == KeyCode.RIGHT) {
-	    setDirectionX(1);
-	    setDirectionY(0);
+	else {
+	    if (code == KeyCode.LEFT) {
+		directionX = -1;
+		directionY = 0;
+	    }
+	    else if (code == KeyCode.RIGHT) {
+		directionX = 1;
+		directionY = 0;
+	    }
+	    else if (code == KeyCode.UP) {
+		directionX = 0;
+		directionY = -1;
+	    }
+	    else if (code == KeyCode.DOWN) {
+		directionX = 0;
+		directionY = 1;
+	    }	
 	}
-	else if (code == KeyCode.UP) {
-	    setDirectionX(0);
-	    setDirectionY(-1);
-	}
-	else if (code == KeyCode.DOWN) {
-	    setDirectionX(0);
-	    setDirectionY(1);
-	}
+	
     } // moveSnake
     
     public boolean checkLocation(ArrayList<Integer[]> positions) {
-	for (int i = 0; i < list.size()-1; i++) {
+	for (int i = 0; i < list.size(); i++) {
 	    if (positions.get(i)[0] == apple.getX() && positions.get(i)[1] == apple.getY()) {
 		return true;
 	    }
@@ -177,18 +219,15 @@ public class SnakeGame implements Playable {
     public Apple makeApple() {
 	ArrayList<Integer[]> positions = snakeLocation();
 	apple = new Apple();
-	apple.setFill(javafx.scene.paint.Color.RED);
 	while (checkLocation(positions)) {
-	    int x = (int) (Math.random() * 40);
-	    int y = (int) (Math.random() * 40);
-	    apple.setX(x);
-	    apple.setY(y);
+	    apple.setX((int) (Math.random() * 40));
+	    apple.setY((int) (Math.random() * 40));
 	}
 	return apple;
     }
     
     public void fillGrid() {
-	Apple apple = makeApple();
+	apple = makeApple();
 	for(int row = 0; row < 40; row++){
 	    for(int col = 0; col < 40; col++) {
 		Rectangle r = new Rectangle(18, 18);
@@ -197,8 +236,8 @@ public class SnakeGame implements Playable {
 		if (row == apple.getY() && col == apple.getX()) {
 		    grid.add(apple, col, row);
 		}
-		if (row == list.get(0).getY() && col == list.get(0).getX()) {		 
-		    grid.add(list.get(0), col, row);
+		if (row == s.getY() && col == s.getX()) {		 
+		    grid.add(s, col, row);
 		}
 	    } // for
 	} // for

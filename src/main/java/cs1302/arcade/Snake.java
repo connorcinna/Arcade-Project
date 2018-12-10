@@ -1,19 +1,20 @@
 package cs1302.arcade;
 
 import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 
 public class Snake extends Circle{
     int x;
     int y;
     
     public Snake() {
-	super(9);
+	super(9, Color.GREEN);
 	x = (int) (Math.random()*40);
 	y = (int) (Math.random()*40);
     } // Snake
 
     public Snake(int a, int b){
-	super(9);
+	super(9, Color.GREEN);
 	x = a;
 	y = b;
 	
