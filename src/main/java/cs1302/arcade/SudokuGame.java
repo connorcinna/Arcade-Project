@@ -18,11 +18,12 @@ public class SudokuGame implements Playable {
     private Tile[][] gameData;
     private Tile[][][] premadeBoards;
     private BoardPiece[] pieces;
+    private int level;
     
     public void play() {
 	premadeBoards = makePremadeBoards();
-	//gameData = createGameData();
-	gameData = premadeBoards[0];
+	level = 1;
+	gameData = createGameData();
 	pieces = new BoardPiece[9];
 	HBox row1 = makeRowOne();
 	Rectangle divider1 = makeHorizRectangle();
@@ -41,13 +42,23 @@ public class SudokuGame implements Playable {
 
     private Tile[][] createGameData(){
 	Tile[][] tiles = new Tile[9][9];
-	for(int i = 0; i < 9; i++){
-	    for(int j = 0; j < 9; j++){
-		tiles[i][j] = new Tile(0, this);
-	    } // for
-	} // for
+	tiles = pickRandomBoard();
+	if(level == 1){
+	    
+	} // if
+	else{
+	    
+	} // else
+	tiles = premadeBoards[0]; // TESTING ONLY
 	return tiles;
     } // createGameData
+    
+    private Tile[][] pickRandomBoard(){
+	Tile[][] tiles;
+	int boardChoice = (int) (Math.random() * 4);
+	tiles = premadeBoards[boardChoice];
+	return tiles;
+    } // pickRandomBoard
     
     protected boolean isWon(){
 	for(int i = 0; i < gameData.length; i++){
@@ -59,17 +70,14 @@ public class SudokuGame implements Playable {
 	} // for
 	for(int i = 0; i < pieces.length; i++){
 	    if(pieces[i].isSolved() == false){
-		System.out.println("Issues in BoardPiece solving"); // DEBUGGGGGGGGGGGGGG
 		return false;
 	    } // if
 	} // for
 	for(int i = 0; i < gameData.length; i++){
 	    if(rowSolved(i) == false){
-		System.out.println("Issue in RowSolved"); // DEBUG
 		return false;
 	    } // if
 	    if(columnSolved(i) == false){
-		System.out.println("Issue in colSolved"); // DEBUG
 		return false;
 	    } // if
 	} // for
@@ -81,16 +89,18 @@ public class SudokuGame implements Playable {
 	boolean oneFound = false;
 	for(int i = 1; i - 1 < tiles.length; i++){
 	    oneFound = false;
-	    if(oneFound){
-		if(tiles[i - 1].getNum() == i){
-		    return false;
+	    for(int j = 0; j < tiles.length; j++){
+		if(oneFound){
+		    if(tiles[j].getNum() == i){
+			return false;
+		    } // if
 		} // if
-	    } // if
-	    if(!oneFound){
-		if(tiles[i].getNum() == i){
-		    oneFound = true;
+		if(!oneFound){
+		    if(tiles[j].getNum() == i){
+			oneFound = true;
+		    } // if
 		} // if
-	    } // if
+	    } // for
 	    if(!oneFound){
 		return false;
 	    } // if
@@ -106,16 +116,18 @@ public class SudokuGame implements Playable {
 	boolean	oneFound = false;
 	for(int i = 1; i - 1 < tiles.length; i++){
             oneFound = false;
-	    if(oneFound){
-                if(tiles[i - 1].getNum() == i){
-		    return false;
-                } // if
-	    } // if 
-            if(!oneFound){
-                if(tiles[i].getNum() == i){
-		    oneFound = true;
-                } // if
-	    } // if   
+	    for(int j = 0; j < tiles.length; j++){
+		if(oneFound){
+		    if(tiles[j].getNum() == i){
+			return false;
+		    } // if
+		} // if 
+		if(!oneFound){
+		    if(tiles[j].getNum() == i){
+			oneFound = true;
+		    } // if
+		} // if
+	    } // for
             if(!oneFound){
 		return false;
             } // if  
@@ -188,7 +200,7 @@ public class SudokuGame implements Playable {
     
     private Tile[][][] makePremadeBoards(){
 	Tile[][][] premade = new Tile[4][9][9];
-	int[][] intArr = {
+	int[][] ints = {
 	    {7, 3, 5, 6, 1, 4, 8, 9, 2},
 	    {8, 4, 2, 9, 7, 3, 5, 6, 1},
 	    {9, 6, 1, 2, 8, 5, 3, 7, 4},
@@ -197,32 +209,68 @@ public class SudokuGame implements Playable {
 	    {5, 7, 9, 1, 2, 6, 4, 3, 8},
 	    {1, 5, 7, 4, 9, 2, 6, 8, 3},
 	    {6, 9, 4, 7, 3, 8, 2, 1, 5},
-	    {0, 2, 8, 5, 6, 1, 7, 4, 9},
+	    {3, 2, 8, 5, 6, 1, 7, 4, 9},
 	};
-	Tile tile;
-	for(int i = 0; i < premade[0].length; i++){
-	    for(int j = 0; j < premade[0][i].length; j++){
-		tile = new Tile(intArr[i][j], this);
-		premade[0][i][j] = tile;
-	    } // for
-	} // for
-	
-	/*
-	  try{
-	  File board1 = new File("cs1302/arcade/boards/board1.txt");
-	    Scanner scan = new Scanner(board1);
-	    Tile t;
-	    for(int i = 0; i < 9; i++){
-		for(int j = 0; j < 9; j++){
-		    t = new Tile(Integer.parseInt(scan.nextLine()), this);
-		    premade[0][i][j] = t;
-		} // for
-	    } // for
-	} catch(Exception e){
-	    System.out.println("Something went wrong!");
-	} // catch
-	    */
-	return premade;
+	int[][] ints2 = {
+	    {2, 9, 5, 7, 4, 3, 8, 6, 1},
+	    {4, 3, 1, 8, 6, 5, 9, 2, 7},
+	    {8, 7, 6, 1, 9, 2, 5, 4, 3},
+	    {3, 8, 7, 4, 5, 9, 2, 1, 6},
+	    {6, 1, 2, 3, 8, 7, 4, 9, 5},
+	    {5, 4, 9, 2, 1, 6, 7, 3, 8},
+	    {7, 6, 3, 5, 2, 4, 1, 8, 9},
+	    {9, 2, 8, 6, 7, 1, 3, 5, 4},
+	    {1, 5, 4, 9, 3, 8, 6, 7, 2},
+	};
+	int[][] ints3 = {
+	    {1, 5, 4, 8, 7, 3, 2, 9, 6},
+	    {3, 8, 6, 5, 9, 2, 7, 1, 4},
+	    {7, 2, 9, 6, 4, 1, 8, 3, 5},
+	    {8, 6, 3, 7, 2, 5, 1, 4, 9},
+	    {9, 7, 5, 3, 1, 4, 6, 2, 8},
+	    {4, 1, 2, 9, 6, 8, 3, 5, 7},
+	    {6, 3, 1, 4, 5, 7, 9, 8, 2},
+	    {5, 9, 8, 2, 3, 6, 4, 7, 1},
+	    {2, 4, 7, 1, 8, 9, 5, 6, 3},
+	    };
+	int[][] ints4 = {
+	    {5, 6, 3, 2, 1, 9, 8, 4, 7},
+	    {7, 1, 8, 4, 5, 3, 9, 2, 6},
+	    {2, 9, 4, 6, 7, 8, 3, 1, 5},
+	    {1, 2, 5, 7, 9, 6, 4, 3, 8},
+	    {6, 8, 7, 3, 4, 2, 1, 5, 9},
+	    {3, 4, 9, 1, 8, 5, 7, 6, 2},
+	    {4, 5, 1, 8, 2, 7, 6, 9, 3},
+	    {9, 7, 6, 5, 3, 1, 2, 8, 4},
+	    {8, 3, 2, 9, 6, 4, 5, 7, 1},
+	};
+	return intsToTiles(ints, ints2, ints3, ints4);
     } // makePremadeBoards
     
+    private Tile[][][] intsToTiles(int[][] i, int[][] i2, int[][] i3, int[][] i4){
+	Tile[][][] tiles = new Tile[4][9][9];
+	for(int row = 0; row < tiles[0].length; row++){
+	    for(int col = 0; col < tiles[0][row].length; col++){
+		tiles[0][row][col] = new Tile(i[row][col], this);
+	    } // for
+	} // for
+	for(int row = 0; row < tiles[1].length; row++){
+	    for(int col = 0; col < tiles[1][row].length; col++){
+		tiles[1][row][col] = new Tile(i2[row][col], this);
+	    } // for
+	} // for
+	for(int row = 0; row < tiles[2].length; row++){
+	    for(int col = 0; col < tiles[2][row].length; col++){
+		tiles[2][row][col] = new Tile(i3[row][col], this);
+	    } // for
+	} // for
+	for(int row = 0; row < tiles[3].length; row++){
+	    for(int col = 0; col < tiles[3][row].length; col++){
+		tiles[3][row][col] = new Tile(i4[row][col], this);
+	    } // for
+	} // for
+	return tiles;
+    } // intsToTiles
+    
 } // SudokuGame
+
