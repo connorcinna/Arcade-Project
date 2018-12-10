@@ -30,6 +30,7 @@ public class BoardPiece extends GridPane{
 	    panes[z].getChildren().add(tiles[z]);
 	    panes[z].setStyle("-fx-border-style: solid inside;"
 			      + "-fx-padding: 10;"
+			      + "-fx-background-color: #dc143c;"
 			      + "-fx-border-width: 2;");
 	} // for
 	for(int i = 0; i < 3; i++){
@@ -64,5 +65,6 @@ public class BoardPiece extends GridPane{
     public int getSpot(int index){
 	return tiles[index].getNum();
     } // getSpot
+
 } // BoardPiece
 

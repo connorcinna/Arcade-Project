@@ -1,13 +1,17 @@
 package cs1302.arcade;
 
 import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 
 public class Tile extends Text{
     
     int numDisplayed;
+    SudokuGame game;
     
-    public Tile(int num){
-	super("[" + num + "]");
+    public Tile(int num, SudokuGame g){
+	super("-" + num + "-");
+	this.game = g;
+	this.setFont(new Font(30));
 	numDisplayed = num;
 	if(num == 0){
 	    this.setText(" - ");
@@ -25,6 +29,7 @@ public class Tile extends Text{
 		    numDisplayed++;
 		    this.setText("" + numDisplayed);
 		} // else
+		System.out.println(game.isWon());
 	    });
     } // setMouseClick
 
