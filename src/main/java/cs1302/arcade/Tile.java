@@ -28,7 +28,7 @@ public class Tile extends Text{
 	    });
     } // setMouseClick
 
-    public int numInside(){
+    public int getNum(){
 	return numDisplayed;
     } // numInside
     

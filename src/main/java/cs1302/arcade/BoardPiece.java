@@ -10,14 +10,13 @@ public class BoardPiece extends GridPane{
     Tile[] tiles;
     boolean[] predeterminedSpots;
     
-    public BoardPiece(int[] startNums){
+    public BoardPiece(Tile[] inputTiles){
 	super();
 	panes = new StackPane[9];
-	tiles = new Tile[9];
+	tiles = inputTiles;
 	predeterminedSpots = new boolean[9];
 	for(int j = 0; j < tiles.length; j++){
-	    tiles[j] = new Tile(startNums[j]);
-	    if(tiles[j].numInside() == 0){
+	    if(tiles[j].getNum() == 0){
 		predeterminedSpots[j] = false;
 	    } // if
 	    else{
@@ -46,11 +45,11 @@ public class BoardPiece extends GridPane{
 	for(int i = 1; i <= 9; i++){
 	    singleFound = false;
 	    for(int j = 0; j < tiles.length; j++){
-		if(singleFound && tiles[j].numInside() == i){
+		if(singleFound && tiles[j].getNum() == i){
 		    singleFound = false;
 		    j = tiles.length;
 		} // if
-		else if(tiles[j].numInside() == i){
+		else if(tiles[j].getNum() == i){
 		    singleFound = true;
 		} // else if
 	    } // for
@@ -63,7 +62,7 @@ public class BoardPiece extends GridPane{
     } //isSolved
     
     public int getSpot(int index){
-	return tiles[index].numInside();
+	return tiles[index].getNum();
     } // getSpot
 } // BoardPiece
 
