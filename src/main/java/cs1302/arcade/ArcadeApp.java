@@ -42,17 +42,19 @@ public class ArcadeApp extends Application {
 	Button snake = new Button("SNAKE");
 	snake.setOnAction(event -> {
 		if (!running) {
-		playable = new SnakeGame();
-		running = true;
-		playable.play();
+		    playable = new SnakeGame();
+		    running = true;
+		    playable.play();
+		    running = false;
 		}
 	    });
 	Button sudoku = new Button("SUDOKU");
 	sudoku.setOnAction(event -> {
 		if (!running) {
-		playable = new SudokuGame();
-		running = true;
-		playable.play();
+		    playable = new SudokuGame();
+		    running = true;
+		    playable.play();
+		    running = false;
 		}
 	    });
 	snake.setMinSize(200,100);

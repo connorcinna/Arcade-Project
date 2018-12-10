@@ -29,12 +29,18 @@ public class Tile extends Text{
 		    numDisplayed++;
 		    this.setText("" + numDisplayed);
 		} // else
-		System.out.println(game.isWon());
+		game.isWon();
 	    });
     } // setMouseClick
 
     public int getNum(){
 	return numDisplayed;
     } // numInside
+    
+    public void setZero(){
+	this.setText(" - ");
+	this.numDisplayed = 0;
+	this.setMouseClick();
+    } // setZero
     
 } // Tile

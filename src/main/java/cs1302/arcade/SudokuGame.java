@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import java.util.Scanner;
 import java.io.File;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.control.TextArea;
 
 public class SudokuGame implements Playable {
     
@@ -19,10 +20,11 @@ public class SudokuGame implements Playable {
     private Tile[][][] premadeBoards;
     private BoardPiece[] pieces;
     private int level;
+    private String information;
     
     public void play() {
 	premadeBoards = makePremadeBoards();
-	level = 1;
+	level = 2;
 	gameData = createGameData();
 	pieces = new BoardPiece[9];
 	HBox row1 = makeRowOne();
@@ -32,8 +34,11 @@ public class SudokuGame implements Playable {
 	HBox row3 = makeRowThree();
 	VBox vbox = new VBox();
 	vbox.getChildren().addAll(row1, divider1, row2, divider2, row3);
+	TextArea textArea = makeTextArea();
+	HBox bigBox = new HBox();
+	bigBox.getChildren().addAll(vbox, textArea);
 	stage = new Stage();
-	Scene scene = new Scene(vbox, Color.BLACK);
+	Scene scene = new Scene(bigBox, Color.BLACK);
 	stage.setScene(scene);
 	stage.setTitle("Sudoku!");
 	stage.sizeToScene();
@@ -44,12 +49,11 @@ public class SudokuGame implements Playable {
 	Tile[][] tiles = new Tile[9][9];
 	tiles = pickRandomBoard();
 	if(level == 1){
-	    
+	    tiles = loseSquares(tiles, 3);
 	} // if
 	else{
-	    
+	    tiles = loseSquares(tiles, 60);
 	} // else
-	tiles = premadeBoards[0]; // TESTING ONLY
 	return tiles;
     } // createGameData
     
@@ -57,8 +61,38 @@ public class SudokuGame implements Playable {
 	Tile[][] tiles;
 	int boardChoice = (int) (Math.random() * 4);
 	tiles = premadeBoards[boardChoice];
+	tiles = mixBoard(tiles);
 	return tiles;
     } // pickRandomBoard
+    
+    private Tile[][] loseSquares(Tile[][] tiles, int numLost){
+	int randomX;
+	int randomY;
+	for(int i = 0; i < numLost; i++){
+	    randomX = (int) (Math.random() * 9);
+	    randomY = (int) (Math.random() * 9);
+	    tiles[randomX][randomY].setZero();
+	} // for
+	return tiles;
+    } // loseSquares
+    
+    private Tile[][] mixBoard(Tile[][] board){
+	int iterations = (int) (Math.random() * 4);
+	for(int i = 0; i < iterations; i++){
+	    board = clockwiseTurn(board);
+	} // for
+	return board;
+    } // mixBoard
+    
+    private Tile[][] clockwiseTurn(Tile[][] board){
+	Tile[][] arr = new Tile[9][9];
+	for(int r = 0; r < arr.length; r++){
+	    for(int c = 0; c < arr.length; c++){
+		arr[c][arr.length - 1 - r] = board[r][c];
+	    } // for
+	} // for
+	return arr;
+    } // clockwiseTurn
     
     protected boolean isWon(){
 	for(int i = 0; i < gameData.length; i++){
@@ -271,6 +305,37 @@ public class SudokuGame implements Playable {
 	} // for
 	return tiles;
     } // intsToTiles
+
+    private TextArea makeTextArea(){
+	makeInformation();
+	information += "Score: " + (level - 1);
+	TextArea textArea = new TextArea(this.information);
+	textArea.setEditable(false);
+	return textArea;
+    } // makeTextField
+    
+    private void makeInformation(){
+	information = "Welcome to Sudoku!\n\n\n";
+	information += "Controls:\n\n";
+	information += "To control the game, click on a number that does not have the symbol";
+	information += " '-' \naround it!\n\n";
+	information += "These numbers are given to you, and cannot be changed.\n\n";
+	information += "Initially, the numbers you can edit will look like a - symbol,";
+	information += " but these can be\ntranformed into a 1 by clicking on them!\n\n";
+	information += "To go to a number you passed, click the number multiple times";
+	information += " until the\nnumber loops around from 9 to 1!\n\n\n\n";
+	information += "How To Play:\n\n";
+	information += "The goal of Sudoku is to create a grid that fits the following\n";
+	information += "conditions:\n\n";
+	information += "1.) Each individual square must only have one of each number\n";
+	information += "     from 1 to 9. The individual squares are noted by the bold\n";
+	information += "     lines surrounding them.\n\n";
+	information += "2.) Each column must only have one of each number from 1 to 9.\n\n";
+	information += "3.) Each row must only have one of number from 1 to 9.\n\n";
+	information += "When these conditions are met, you have won! An alert will be\n";
+	information += "displayed upon vitory, and a new level will appear.\n\n\n\n";
+	information += "NOTE: The first level is very easy. The levels after the first are \n";
+	information += "the difficultly more commonly expected when playing Sudoku.\n\n\n";
+    } // makeInformation
     
 } // SudokuGame
-
