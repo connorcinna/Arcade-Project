@@ -16,7 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 /** 
- * An application that displays an interactible
+ * An application that displays an interactable
  * grid that is clickable for the game of Sudoku
  * to be played. There are 16 puzzles included,
  * where the difficulty is based on the number of

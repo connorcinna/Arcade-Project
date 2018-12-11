@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 /**
    The class that creates all the snakes that are made in Snake. Snake extends Circle,
    because snakes are just green Circles that have X and Y coordinates associated with them.
+
+   @author Matthew Gebara, Connor Cummings
  */
 public class Snake extends Circle{
     int x;

@@ -1,3 +1,4 @@
+
 package cs1302.arcade;
 
 import javafx.scene.shape.Circle;
@@ -6,6 +7,7 @@ import javafx.scene.paint.Color;
 /**
    The class that creates all the Apples that are made in Snake. Apple extends Circle,
    because apples are just red Circles that have X and Y coordinates associated with them.
+   @author Matthew Gebara, Connor Cummings
  */
 
 

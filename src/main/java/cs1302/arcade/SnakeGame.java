@@ -34,6 +34,8 @@ import javafx.geometry.Insets;
     It functions in accordance with traditional implementations of Snake, and allows the player
     to exit the game once they complete it or fail. It implements the interface for both our
     games, Playable, which only contains the method play().
+
+    @author Matthew Gebara, Connor Cummings
  */
 public class SnakeGame implements Playable {
     
@@ -196,7 +198,7 @@ public class SnakeGame implements Playable {
 			} // for
 		    } //if
 		    grid.getChildren().remove(s);
-		    s.setX(s.getX() + directionX); //updates the snakeheads location 10 times a second
+		    s.setX(s.getX() + directionX); //updates snakehead location
 		    s.setY(s.getY() + directionY);
 		    grid.add(s, s.getX(), s.getY());
 		    if ((apple.getX() == s.getX()) && (apple.getY() == s.getY())) { 
@@ -332,11 +334,8 @@ public class SnakeGame implements Playable {
 	string += "The snake will always move in the last direction it was told to.\n\n";
 	string += "If the snake runs into itself or into a wall, then the game ends.\n\n";
 	string += "Collect apples to get points.\n\n";
-	string += "As the snake eats apples, it will grow longer, and your score will increase.\n\n";
+	string += "As the snake eats apples, it will grow longer, and the score will increase.\n\n";
 	string += "To win, make your snake fill up the entire game board.\n\n";
-	string += "As the game progresses, your snake will leave a trail of where it has been.\n\n";
-	string += "This trail will grow longer as the game goes on,\n\n";
-	string += "and will last longer as the snake eats more apples.\n\n";
 	string += "Score: " + score;
 	instructions.setText(string);
     }

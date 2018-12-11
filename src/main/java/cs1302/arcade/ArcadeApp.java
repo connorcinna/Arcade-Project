@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
  * can be used to launch the games Sudoku or Snake using buttons.
  * After a game is launched and completed, either the same
  * game or the other available game can be launched.
+ @author Matthew Gebara, Connor Cummings
  */
 public class ArcadeApp extends Application {
 
