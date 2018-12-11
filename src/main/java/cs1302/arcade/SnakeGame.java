@@ -6,6 +6,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.animation.Timeline;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import java.util.ArrayList;
@@ -19,11 +21,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ButtonType;
 import javafx.animation.Animation.Status;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import java.util.Optional;
 
 public class SnakeGame implements Playable {
     
@@ -39,6 +43,8 @@ public class SnakeGame implements Playable {
     private Apple apple;
     private Snake s;
     private boolean stopped;
+    private Stage loserStage;
+    private Scene loserScene;
     
     public void play() {
 	stopped = false;
@@ -71,26 +77,49 @@ public class SnakeGame implements Playable {
     } // play
 	  
     public void gameOver() {
+	loserStage = new Stage();
+	BorderPane loserPane = new BorderPane();
+	HBox hbox = new HBox();
+	Button playAgain = new Button("PLAY AGAIN?");
+	Button exit = new Button("EXIT");
+	playAgain.setOnAction(event ->  {
+		loserStage.close();
+		stage.close();
+		play();
+	    });
+	exit.setOnAction(event -> {
+		loserStage.close();
+		stage.close();
+	    });
+	loserPane.setTop(new TextArea("GAME OVER"));
+	loserPane.setCenter(hbox);
+	hbox.getChildren().addAll(playAgain, exit);
+	loserScene = new Scene(loserPane, 360, 200);
+	loserStage.setScene(loserScene);
+	loserStage.sizeToScene();
+	loserStage.show();
+	stopped = true;
+	/*
 	Alert alert = new Alert(AlertType.INFORMATION);
 	alert.setTitle("GAME OVER");
 	alert.setContentText("YOU LOST");
+	alert.setResizable(false);
 	alert.setOnHidden(event -> Platform.exit());
 	alert.show();
 	stopped = true;
+	*/
     }
     
     public Timeline makeTimeLine() {
 	KeyFrame kf = new KeyFrame(Duration.millis(100), event -> {
 		if (!stopped) {
 		    if (s.getX() >= 40 || s.getY() >= 40 || s.getX() <= 0 || s.getY() <= 0) { //going out of bounds
-			s.setX(20);
-			s.setY(20);
 			directionX = 0;
 			directionY = 0;
 			gameOver();
 		    }
 		    if (list.size() > 1) {
-			for (int i = 1; i < list.size(); i++) {
+			for (int i = list.size() - 1; i > 0; i--) {
 			    if (s.getX() == list.get(i).getX() && s.getY() == list.get(i).getY()) {
 				gameOver();
 			    }
@@ -106,7 +135,8 @@ public class SnakeGame implements Playable {
 		    grid.add(s, s.getX(), s.getY());
 		    if ((apple.getX() == s.getX()) && (apple.getY() == s.getY())) { 
 			eatApple();
-		    }		   
+			System.out.println(list.size());
+		    }
 		}
 	});
 	Timeline timeline = new Timeline(kf);
@@ -134,8 +164,8 @@ public class SnakeGame implements Playable {
 	    snakeY = list.get(list.size()-1).getY();
 	}
 	Snake snake = new Snake(snakeX, snakeY);
-	list.add(snake);
 	grid.add(snake, snakeX, snakeY);
+	list.add(snake);
 	apple.setX((int) (Math.random() * 40));
 	apple.setY((int) (Math.random() * 40));
 	ArrayList<Integer[]> positions = snakeLocation();
@@ -144,6 +174,8 @@ public class SnakeGame implements Playable {
 	    apple.setY((int) (Math.random() * 40));
 	}
 	grid.add(apple, apple.getX(), apple.getY());
+	score++;
+	setInstructions();
     }
 
     public void moveSnake(KeyEvent e){
@@ -164,13 +196,6 @@ public class SnakeGame implements Playable {
 	    else if (code == KeyCode.DOWN && directionY != -1) {
 		directionX = 0;
 		directionY = 1;
-	    }
-	    else {
-		s.setX(20);
-		s.setY(20);
-		directionX = 0;
-		directionY = 0;
-		gameOver();		
 	    }
 	}
 	else {
@@ -205,7 +230,7 @@ public class SnakeGame implements Playable {
     public ArrayList<Integer[]> snakeLocation() {
 	ArrayList<Integer[]> positions = new ArrayList<Integer[]>();
 	for (int i = 0; i < list.size(); i++) {
-	    positions.add(i, new Integer[2]);
+	    positions.add(new Integer[2]);
 	    positions.get(i)[0] = list.get(i).getX();
 	    positions.get(i)[1] = list.get(i).getY();
 	}
@@ -213,7 +238,17 @@ public class SnakeGame implements Playable {
     }
     
     public void setInstructions() {
-	instructions.setText("Use the 4 arrow keys (not on the numpad) to control the snake.\n\nThe snake will always move in the last direction it was told to.\n\nIf the snake runs into itself or into a wall, then the game ends.\n\nCollect apples to get points.\n\n As the snake eats apples, it will grow longer, and your score will increase.\n\nTo win, make your snake fill up the entire game board.\n\nAs the game progresses, your snake will leave a trail of where it has been.\n\nThis trail will grow longer as the game goes on,\n\nand will last longer as the snake eats more apples.\n\nScore: " + score);
+	String string = "Use the 4 arrow keys (not on the numpad) to control the snake.\n\n";
+	string += "The snake will always move in the last direction it was told to.\n\n";
+	string += "If the snake runs into itself or into a wall, then the game ends.\n\n";
+	string += "Collect apples to get points.\n\n";
+	string += "As the snake eats apples, it will grow longer, and your score will increase.\n\n";
+	string += "To win, make your snake fill up the entire game board.\n\n";
+	string += "As the game progresses, your snake will leave a trail of where it has been.\n\n";
+	string += "This trail will grow longer as the game goes on,\n\n";
+	string += "and will last longer as the snake eats more apples.\n\n";
+	string += "Score: " + score;
+	instructions.setText(string);
     }
 
     public Apple makeApple() {
