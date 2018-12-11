@@ -28,7 +28,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.geometry.Insets;
-
+/** 
+    SnakeGame is the main class for running the Snake game. It creates snake and apple objects 
+    and utilizes a timeline to move these snake objects around the game scene. 
+    It functions in accordance with traditional implementations of Snake, and allows the player
+    to exit the game once they complete it or fail. It implements the interface for both our
+    games, Playable, which only contains the method play().
+ */
 public class SnakeGame implements Playable {
     
     ArrayList<Snake> list;
@@ -46,6 +52,11 @@ public class SnakeGame implements Playable {
     private Stage loserStage;
     private Scene loserScene;
     private boolean timelineRunning;
+    /**
+       The method which is called when the user selects Snake to play. This method functions
+       similar to start in other programs, as it creates a scene and stage and shows the 
+       scene in the stage. 
+     */
     
     public void play() {
 	stopped = false;
@@ -83,6 +94,13 @@ public class SnakeGame implements Playable {
 	stage.sizeToScene();
 	stage.show();
     } // play
+    /**
+       Once the player loses, either by running out of bounds or by making the snake
+       eat itself, this method creates a popup that tells them they lost, and allows
+       them to exit back to the main arcade app menu. This method also sets a boolean flag
+       equal to true in order to prevent the code in the timeline from continuing to execute
+       after losing.
+     */
 	  
     public void gameOver() {
 	loserStage = new Stage();
@@ -112,10 +130,54 @@ public class SnakeGame implements Playable {
 	loserStage.show();
 	stopped = true;
     }
+    /**
+       Provides the same functionality as gameOver, but for the condition of winning, which is
+       covering every square in the game with the snake.
+     */
+    public void win() {
+	winnerStage = new Stage();
+	winnerStage.setMinWidth(360);
+	winnerStage.setMinHeight(200);
+	BorderPane loserPane = new BorderPane();
+	HBox hbox = new HBox();
+	hbox.setPadding(new Insets(150));
+	Button exit = new Button("EXIT");
+	exit.setOnAction(event -> {
+		winnerStage.close();
+		stage.close();
+	    });
+	loserPane.setMinSize(360, 200);
+	TextArea over = new TextArea("YOU WIN!");
+	over.setMaxWidth(360);
+	over.setMaxHeight(50);
+	over.setEditable(false);
+	loserPane.setTop(over);
+	loserPane.setCenter(hbox);
+	hbox.getChildren().addAll(exit);
+	winnerScene = new Scene(loserPane, 360, 200);
+	winnerStage.setScene(winnerScene);
+	winnerStage.setMaximized(true);
+	winnerStage.sizeToScene();
+	winnerStage.setTitle("WINNER");
+	winnerStage.show();
+	stopped = true;
+    }
+    /**
+       Creates a timeline that moves the snake around the board. The keyframe executes every
+       100 milliseconds, making the game run at 10 frames per second. Includes a lose condition
+       if the snake goes out of bounds or the snake touches any other part of it's body.
+       Also includes a win condition if every spot in the gameboard is covered by the snake. 
+       @return Timeline returns a timeline that is played in the play method.
+     */
     
     public Timeline makeTimeLine() {
 	KeyFrame kf = new KeyFrame(Duration.millis(100), event -> {
+		//prevents code in timeline from running if player either loses or wins
 		if (!stopped) {
+		    if (list.size() == 1600) { //win condition
+			win();
+		    }
+		    //going out of bounds
 		    if (s.getX() >= 40 || s.getY() >= 40 || s.getX() <= 0 || s.getY() <= 0) {
 			directionX = 0;
 			directionY = 0;
@@ -146,10 +208,15 @@ public class SnakeGame implements Playable {
 	timeline.setCycleCount(Timeline.INDEFINITE);
 	return timeline;
     } // makeTimeLine
+    /**
+       Removes the apple from the game and creates another snake object right behind 
+       the last snake in the list. Updates the score when an apple is eaten.
+     */
 
     public void eatApple() {
 	grid.getChildren().remove(apple);
 	int snakeX = 0, snakeY = 0;
+	//determines the location of where the next snake should be based on direction
 	if (directionX == 1) {
 	    snakeX = list.get(list.size()-1).getX()-1;
 	    snakeY = list.get(list.size()-1).getY();
@@ -180,6 +247,11 @@ public class SnakeGame implements Playable {
 	score++;
 	setInstructions();
     }
+    /**
+       When used in an event filter, takes in the KeyEvent and updates the direction of the snake
+       according to the key pressed. Does not allow for the snake to move backwards if it's
+       size is greater than one (just the head).
+     */
 
     public void moveSnake(KeyEvent e){
 	KeyCode code = e.getCode();
@@ -221,6 +293,12 @@ public class SnakeGame implements Playable {
 	}
 	
     } // moveSnake
+    /**
+       Checks if the location for where the apple will spawn is on top of a snake part.
+       @param positions An ArrayList of Integer arrays of size 2, where index 0 represents the 
+       x coordinate and 1 represents the Y coordinate.
+       @return boolean Whether or not the apple is on top of the snake or not.
+     */
     
     public boolean checkLocation(ArrayList<Integer[]> positions) {
 	for (int i = 0; i < list.size(); i++) {
@@ -230,6 +308,12 @@ public class SnakeGame implements Playable {
 	}
 	return false;
     }
+    /**
+       Creates an ArrayList of Integer arrays of size 2 that each hold the X and Y coordinates
+       of the snakes locations.
+       @return ArrayList<Integer[]> The locations of all the parts of the snake.
+     */
+    
     public ArrayList<Integer[]> snakeLocation() {
 	ArrayList<Integer[]> positions = new ArrayList<Integer[]>();
 	for (int i = 0; i < list.size(); i++) {
@@ -239,6 +323,9 @@ public class SnakeGame implements Playable {
 	}
 	return positions;
     }
+    /**
+       Sets the instructions that will be displayed on the right of the game being played
+     */
     
     public void setInstructions() {
 	String string = "Use the 4 arrow keys (not on the numpad) to control the snake.\n\n";
@@ -253,6 +340,10 @@ public class SnakeGame implements Playable {
 	string += "Score: " + score;
 	instructions.setText(string);
     }
+    /**
+       Creates an apple object and makes sure that it's coordinates aren't on top of the snake
+       @return Apple the apple object.
+     */
 
     public Apple makeApple() {
 	ArrayList<Integer[]> positions = snakeLocation();
@@ -263,6 +354,10 @@ public class SnakeGame implements Playable {
 	}
 	return apple;
     }
+    /**
+       Fills the gridpane that the game is played in with black squares in a 40 by 40 grid. 
+       Also draws the first instance of the snake object nad the apple to the grid.
+     */
     
     public void fillGrid() {
 	apple = makeApple();
