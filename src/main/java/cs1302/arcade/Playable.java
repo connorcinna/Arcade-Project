@@ -1,7 +1,7 @@
 package cs1302.arcade;
 
 /**
- * An interface that when inplemented
+ * An interface that when implemented
  * means that classes that act as games
  * can be played.
  *

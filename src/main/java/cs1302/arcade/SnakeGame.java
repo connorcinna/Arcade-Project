@@ -53,6 +53,8 @@ public class SnakeGame implements Playable {
     private boolean stopped;
     private Stage loserStage;
     private Scene loserScene;
+    private Stage winnerStage;
+    private Scene winnerScene;
     private boolean timelineRunning;
     /**
        The method which is called when the user selects Snake to play. This method functions
