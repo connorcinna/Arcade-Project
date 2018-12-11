@@ -9,8 +9,8 @@ public class Snake extends Circle{
     
     public Snake() {
 	super(9, Color.GREEN);
-	x = (int) (Math.random()*40);
-	y = (int) (Math.random()*40);
+	x = (int) (Math.random()*30) + 5;
+	y = (int) (Math.random()*30) + 5;
     } // Snake
 
     public Snake(int a, int b){

@@ -27,7 +27,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import java.util.Optional;
+import javafx.geometry.Insets;
 
 public class SnakeGame implements Playable {
     
@@ -45,9 +45,11 @@ public class SnakeGame implements Playable {
     private boolean stopped;
     private Stage loserStage;
     private Scene loserScene;
+    private boolean timelineRunning;
     
     public void play() {
 	stopped = false;
+	timelineRunning = false;
 	score = 0;
 	directionX = 0;
 	directionY = 0;
@@ -69,8 +71,14 @@ public class SnakeGame implements Playable {
 	stage.setHeight(720);
 	scene = new Scene(pane, 1280,720);
 	Timeline timeline = makeTimeLine();
+	if (timelineRunning) {
+	    timeline.stop();
+	    timelineRunning = false;
+	} // if
 	timeline.play();
+	timelineRunning = true;
 	scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> moveSnake(event));
+	stage.setTitle("SNAKE");
 	stage.setScene(scene);
 	stage.sizeToScene();
 	stage.show();
@@ -78,42 +86,37 @@ public class SnakeGame implements Playable {
 	  
     public void gameOver() {
 	loserStage = new Stage();
+	loserStage.setMinWidth(360);
+	loserStage.setMinHeight(200);
 	BorderPane loserPane = new BorderPane();
 	HBox hbox = new HBox();
-	Button playAgain = new Button("PLAY AGAIN?");
+	hbox.setPadding(new Insets(150));
 	Button exit = new Button("EXIT");
-	playAgain.setOnAction(event ->  {
-		loserStage.close();
-		stage.close();
-		play();
-	    });
 	exit.setOnAction(event -> {
 		loserStage.close();
 		stage.close();
 	    });
-	loserPane.setTop(new TextArea("GAME OVER"));
+	loserPane.setMinSize(360, 200);
+	TextArea over = new TextArea("GAME OVER");
+	over.setMaxWidth(360);
+	over.setMaxHeight(50);
+	over.setEditable(false);
+	loserPane.setTop(over);
 	loserPane.setCenter(hbox);
-	hbox.getChildren().addAll(playAgain, exit);
+	hbox.getChildren().addAll(exit);
 	loserScene = new Scene(loserPane, 360, 200);
 	loserStage.setScene(loserScene);
+	loserStage.setMaximized(true);
 	loserStage.sizeToScene();
+	loserStage.setTitle("YOU DIED");
 	loserStage.show();
 	stopped = true;
-	/*
-	Alert alert = new Alert(AlertType.INFORMATION);
-	alert.setTitle("GAME OVER");
-	alert.setContentText("YOU LOST");
-	alert.setResizable(false);
-	alert.setOnHidden(event -> Platform.exit());
-	alert.show();
-	stopped = true;
-	*/
     }
     
     public Timeline makeTimeLine() {
 	KeyFrame kf = new KeyFrame(Duration.millis(100), event -> {
 		if (!stopped) {
-		    if (s.getX() >= 40 || s.getY() >= 40 || s.getX() <= 0 || s.getY() <= 0) { //going out of bounds
+		    if (s.getX() >= 40 || s.getY() >= 40 || s.getX() <= 0 || s.getY() <= 0) {
 			directionX = 0;
 			directionY = 0;
 			gameOver();
@@ -124,7 +127,8 @@ public class SnakeGame implements Playable {
 				gameOver();
 			    }
 			    grid.getChildren().remove(list.get(i));
-			    list.get(i).setX(list.get(i - 1).getX()); //sets the location of every subsequent snakepart 10 times a second
+			    //sets the location of every subsequent snakepart 10 times a second
+			    list.get(i).setX(list.get(i - 1).getX()); 
 			    list.get(i).setY(list.get(i - 1).getY());
 			    grid.add(list.get(i), list.get(i).getX(), list.get(i).getY());
 			} // for
@@ -135,7 +139,6 @@ public class SnakeGame implements Playable {
 		    grid.add(s, s.getX(), s.getY());
 		    if ((apple.getX() == s.getX()) && (apple.getY() == s.getY())) { 
 			eatApple();
-			System.out.println(list.size());
 		    }
 		}
 	});
